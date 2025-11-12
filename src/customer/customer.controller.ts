@@ -1,6 +1,7 @@
 import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { CustomerService } from './customer.service';
 import { createCustomerDto } from './dto/createCustomer.dto';
+import { UppercasePipe } from 'src/common/pipe/uppercase/uppercase.pipe';
 
 @Controller('customer')
 export class CustomerController {
@@ -12,12 +13,13 @@ export class CustomerController {
     return {
       status: true,
       message: 'Fetch Successfully',
+      total: this.customerService.getAll().length,
       data: this.customerService.getAll(),
     };
   }
 
   @Get(':id')
-  getOne(@Param('id') id: string) {
+  getOne(@Param('id', UppercasePipe) id: string) {
     const data = this.customerService.getOne(Number(id));
     return {
       status: true,
@@ -28,7 +30,7 @@ export class CustomerController {
 
   //Post
   @Post()
-  addCustomer(@Body() createCustomerDto: createCustomerDto) {
+  addCustomer(@Body(UppercasePipe) createCustomerDto: createCustomerDto) {
     const data = this.customerService.create(createCustomerDto);
     return {
       status: true,
@@ -38,7 +40,7 @@ export class CustomerController {
   }
 
   //delete
-  @Delete()
+  @Delete(':id')
   deleteCustomer(@Param('id') id: string) {
     return this.customerService.delete(Number(id));
   }
