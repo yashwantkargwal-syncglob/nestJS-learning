@@ -1,7 +1,16 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { CustomerService } from './customer.service';
 import { createCustomerDto } from './dto/createCustomer.dto';
 import { UppercasePipe } from 'src/common/pipe/uppercase/uppercase.pipe';
+import { AuthGuard } from 'src/guard/auth/auth.guard';
 
 @Controller('customer')
 export class CustomerController {
@@ -30,6 +39,7 @@ export class CustomerController {
 
   //Post
   @Post()
+  @UseGuards(AuthGuard)
   addCustomer(@Body(UppercasePipe) createCustomerDto: createCustomerDto) {
     const data = this.customerService.create(createCustomerDto);
     return {
@@ -41,6 +51,7 @@ export class CustomerController {
 
   //delete
   @Delete(':id')
+  @UseGuards(AuthGuard)
   deleteCustomer(@Param('id') id: string) {
     return this.customerService.delete(Number(id));
   }
