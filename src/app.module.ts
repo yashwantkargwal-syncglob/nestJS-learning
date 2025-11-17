@@ -6,10 +6,11 @@ import { UserService } from './user/user.service';
 import { StudentModule } from './student/student.module';
 import { CustomerModule } from './customer/customer.module';
 import { UserRoleController } from './user-role/user-role.controller';
+import { ExceptionHandleController } from './exception-handle/exception-handle.controller';
 
 @Module({
   imports: [StudentModule, CustomerModule],
-  controllers: [AppController, UserController, UserRoleController],
+  controllers: [AppController, UserController, UserRoleController, ExceptionHandleController],
   providers: [AppService, UserService],
 })
 export class AppModule {}
